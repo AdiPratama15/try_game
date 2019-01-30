@@ -1,23 +1,17 @@
-var size;
+var size = 4;
 var matrix = new Array(size);
 
 function initialize() {
-	size = 4;
 	
-	var arr_row = new Array(4);	
 	for(var x = 0; x < size; x++) {	
-		arr_row[x] = "";
+		matrix[x] = new Array(size).fill("x");
 	}
-	
-	for(var y = 0; y < size; y++) {	
-		matrix[y] = arr_row;
-	}
-	
+		
 	start_game();
 }
 
 function get_random_loc() {
-	var max  = size-1;
+	var max  = size;
 	var min  = 0;
 	
 	var random = {x:0,y:0};
@@ -26,9 +20,8 @@ function get_random_loc() {
 		
 		random.x = Math.floor(Math.random() * (max - min)) + min;
 		random.y = Math.floor(Math.random() * (max - min)) + min;
-		//console.log("isi "+random.x+" "+random.y+" : "+matrix[random.x][random.y]);
-		
-	} while(matrix[random.x][random.y] != "");
+				
+	} while(matrix[random.x][random.y] != "x");
 		
 	return random;
 }
@@ -39,7 +32,7 @@ function set_cell_val(loc, val) {
 	
 	var cell = document.getElementById("cell-"+x+"-"+y);
 	
-	if(val == "") {
+	if(val == "" || val == undefined) {
 		
 		cell.innerHTML = "";
 		
@@ -47,11 +40,17 @@ function set_cell_val(loc, val) {
 	
 		matrix[x][y] = val;  
 		
-		//console.log("diisi "+val);
-		
+		//console.log("Pengisian "+x+" "+y+" : "+val);
 		
 		cell.innerHTML = "<div class='val val-"+val+"'>"+val+"</div>";
 	}
+}
+
+function rem_cell_val(x, y) {
+	matrix[x][y] = "x";
+	
+	var cell 		= document.getElementById("cell-"+x+"-"+y);
+	cell.innerHTML 	= "";
 }
 
 function start_game() {
@@ -82,46 +81,65 @@ function start_game() {
 
 function slide_up() {
 	
-	//squeeze first 	
-	//for(var x = 0; x < size; x++) {
-				
-		for(var y = 0; y < size; y++) {
+		
+		for(var y=0; y<size; y++) {
 			
-			var last_empty = {x:"",y:""};
-
+			var pointer = -1;
+		
 			//looking to the bottom
-			for(var y1 = y; y1 < size; y1++) {
+			for(var x = 0; x < size; x++) {
 			
-				var cur_val = matrix[x][y1];
-				//console.log("cur_val "+x+" "+y1+" = "+cur_val);
+				var cur_val = matrix[x][y];
 				
-				//initialize first in a column
-				if(cur_val 	== "" && last_empty.x == "" && last_empty.y == "") {
-					last_empty.x = x;
-					last_empty.y = y1;
-					console.log("last empty : "+last_empty.x+" "+last_empty.y);
-				}
+				if(cur_val 	== "x" && 0 > pointer) {
+					
+					//point to last empty
+					pointer = x;
+					//console.log("pointer : "+x);
 				
-				/*
-				else if(cur_val != "") {
-					console.log("mengisi "+last_empty.x+" "+last_empty.y);
-					matrix[last_empty.x][last_empty.y] = matrix[x][y1];
-					matrix[x,y1] = "";
+							
+				} else if (cur_val != "x" && x < size-1 && cur_val == matrix[x+1][y]) {
+											
+							
+						//merge next
+						set_cell_val({"x":x,"y":y},cur_val*2);
+						rem_cell_val(x+1,y);
+						
+						matrix[x+1][y] = "x";
+						
+						pointer = x+1;
+							
 					
-					set_cell_val(last_empty,matrix[x][y1]);
-					set_cell_val({x:x,y:y1},"");
+				} else if (cur_val 	!= "x" && pointer >= 0) {
 					
-					last_empty.x = x;
-					last_empty.y = y1;
-					break;
+					
+					if(cur_val == matrix[pointer][y]) {
+						
+						//merge jump
+						set_cell_val({"x":pointer-1,"y":y},cur_val*2);
+						rem_cell_val(x,y);
+						
+						matrix[x][y] = "x";
+						
+						pointer = x;
+						
+					}  else {
+						
+						//shift
+						set_cell_val({"x":pointer,"y":y},cur_val);
+						rem_cell_val(x,y);
+						
+						matrix[x][y] = "x";
+						
+						pointer++;
+					}
 				}
-				*/
 				
 			}
+		
 		}
 		
-	//}
-	
+		set_cell_val(get_random_loc(),2);
 }
 
 
