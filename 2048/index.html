@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>2048 Game!</title>
+	<link rel="stylesheet" href="style.css"/>
+	<script src="script.js"></script>
+</head>
+<body onload="initialize()">
+<div id="game" >
+	<div id="game-header">
+		<button id="btn-start" onclick="start_game()">Start</button>
+		<span id="game-score">Your Score : <span id="score-value">0</span></span>
+	</div>
+	<div id="game-canvas">
+	
+	</div>
+	<div id="game-nav">
+		<button id="btn-up" onclick="slide_up()">Up</button> <button id="btn-right">Right</button> <button id="btn-bottom">Bottom</button> <button id="btn-left">Left</button>
+	</div>
+</div>
+</body>
+</html>
