@@ -4,7 +4,7 @@ var matrix = new Array(size);
 function initialize() {
 	
 	for(var x = 0; x < size; x++) {	
-		matrix[x] = new Array(size).fill("x");
+		matrix[x] = new Array(size).fill(0);
 	}
 		
 	start_game();
@@ -21,7 +21,7 @@ function get_random_loc() {
 		random.x = Math.floor(Math.random() * (max - min)) + min;
 		random.y = Math.floor(Math.random() * (max - min)) + min;
 				
-	} while(matrix[random.x][random.y] != "x");
+	} while(matrix[random.x][random.y] != 0);
 		
 	return random;
 }
@@ -81,66 +81,206 @@ function start_game() {
 
 function slide_up() {
 	
-		
 		for(var y=0; y<size; y++) {
 			
-			var pointer = -1;
-		
-			//looking to the bottom
-			for(var x = 0; x < size; x++) {
-			
-				var cur_val = matrix[x][y];
+			for(var x = 1; x < size; x++) {
 				
-				if(cur_val 	== "x" && 0 > pointer) {
-					
-					//point to last empty
-					pointer = x;
-					//console.log("pointer : "+x);
+				cursor = x;
 				
-							
-				} else if (cur_val != "x" && x < size-1 && cur_val == matrix[x+1][y]) {
-											
-							
-						//merge next
-						set_cell_val({"x":x,"y":y},cur_val*2);
-						rem_cell_val(x+1,y);
-						
-						matrix[x+1][y] = "x";
-						
-						pointer = x+1;
-							
+				do {
 					
-				} else if (cur_val 	!= "x" && pointer >= 0) {
-					
-					
-					if(cur_val == matrix[pointer][y]) {
+					if(matrix[cursor][y] == 0 && matrix[cursor-1][y] == 0) {
 						
-						//merge jump
-						set_cell_val({"x":pointer-1,"y":y},cur_val*2);
-						rem_cell_val(x,y);
+						break;
 						
-						matrix[x][y] = "x";
-						
-						pointer = x;
-						
-					}  else {
+					} else if(matrix[cursor][y] > 0 && matrix[cursor-1][y] == 0) {
 						
 						//shift
-						set_cell_val({"x":pointer,"y":y},cur_val);
-						rem_cell_val(x,y);
+						matrix[cursor-1][y] = matrix[cursor][y];
 						
-						matrix[x][y] = "x";
+						set_cell_val({"x":cursor-1,"y":y},matrix[cursor-1][y]);
+						rem_cell_val(cursor,y);
 						
-						pointer++;
+						matrix[cursor][y]   = 0;
+						
+						
+					} else if(matrix[cursor][y] > 0 && matrix[cursor][y] == matrix[cursor-1][y]) {
+						
+						//merge
+						matrix[cursor-1][y] = matrix[cursor-1][y] + matrix[cursor][y];
+						
+						set_cell_val({"x":cursor-1,"y":y},matrix[cursor-1][y]);
+						rem_cell_val(cursor,y);
+						
+						matrix[cursor][y]   = 0;
+						
+						break;
+						
 					}
-				}
-				
+					
+					cursor--;
+					
+				} while(cursor > 0);
 			}
-		
 		}
 		
-		set_cell_val(get_random_loc(),2);
+	set_cell_val(get_random_loc(),2);
+		
 }
+
+
+function slide_down() {
+	
+		for(var y=0; y<size; y++) {
+			
+			
+			for(var x = size-2; x >= 0; x--) {
+				
+				cursor = x;
+				
+				do {
+					
+					if(matrix[cursor][y] == 0 && matrix[cursor+1][y] == 0) {
+						
+						break;
+						
+					} else if(matrix[cursor][y] > 0 && matrix[cursor+1][y] == 0) {
+						
+						//shift
+						matrix[cursor+1][y] = matrix[cursor][y];
+						
+						set_cell_val({"x":cursor+1,"y":y},matrix[cursor+1][y]);
+						rem_cell_val(cursor,y);
+						
+						matrix[cursor][y]   = 0;
+						
+						
+					} else if(matrix[cursor][y] > 0 && matrix[cursor][y] == matrix[cursor+1][y]) {
+						
+						//merge
+						matrix[cursor+1][y] = matrix[cursor+1][y] + matrix[cursor][y];
+						
+						set_cell_val({"x":cursor+1,"y":y},matrix[cursor+1][y]);
+						rem_cell_val(cursor,y);
+						
+						matrix[cursor][y]   = 0;
+						
+						break;
+						
+					}
+					
+					cursor++;
+					
+				} while(cursor < size-1);
+			}
+		}
+		
+	set_cell_val(get_random_loc(),2);
+		
+}
+
+
+function slide_left() {
+				
+		for(var x = 0; x < size; x++) {
+			
+			for(var y=1; y<size; y++) {
+				
+				cursor = y;
+				
+				do {
+					
+					if(matrix[x][cursor] == 0 && matrix[x][cursor-1] == 0) {
+						
+						break;
+						
+					} else if(matrix[x][cursor] > 0 && matrix[x][cursor-1] == 0) {
+						
+						//shift
+						matrix[x][cursor-1] = matrix[x][cursor];
+						
+						set_cell_val({"x":x,"y":cursor-1},matrix[x][cursor-1]);
+						rem_cell_val(x,cursor);
+						
+						matrix[x][cursor]   = 0;
+						
+						
+					} else if(matrix[x][cursor] > 0 && matrix[x][cursor] == matrix[x][cursor-1]) {
+						
+						//merge
+						matrix[x][cursor-1] = matrix[x][cursor-1] + matrix[x][cursor];
+						
+						set_cell_val({"x":x,"y":cursor-1},matrix[x][cursor-1]);
+						rem_cell_val(x,cursor);
+						
+						matrix[x][cursor]   = 0;
+						
+						break;
+						
+					}
+					
+					cursor--;
+					
+				} while(cursor > 0);
+			}
+		}
+		
+	set_cell_val(get_random_loc(),2);
+		
+}
+
+
+function slide_right() {
+	
+		for(var x=0; x<size; x++) {
+						
+			for(var y = size-2; y >= 0; y--) {
+				
+				cursor = y;
+				
+				do {
+					
+					if(matrix[x][cursor] == 0 && matrix[x][cursor+1] == 0) {
+						
+						break;
+						
+					} else if(matrix[x][cursor] > 0 && matrix[x][cursor+1] == 0) {
+						
+						//shift
+						matrix[x][cursor+1] = matrix[x][cursor];
+						
+						set_cell_val({"x":x,"y":cursor+1},matrix[x][cursor+1]);
+						rem_cell_val(x,cursor);
+						
+						matrix[x][cursor]   = 0;
+						
+						
+					} else if(matrix[x][cursor] > 0 && matrix[x][cursor] == matrix[x][cursor+1]) {
+						
+						//merge
+						matrix[x][cursor+1] = matrix[x][cursor+1] + matrix[x][cursor];
+						
+						set_cell_val({"x":x,"y":cursor+1},matrix[x][cursor+1]);
+						rem_cell_val(x,cursor);
+						
+						matrix[x][cursor]   = 0;
+						
+						break;
+						
+					}
+					
+					cursor++;
+					
+				} while(cursor < size-1);
+			}
+		}
+		
+	set_cell_val(get_random_loc(),2);
+		
+}
+
+
+
 
 
 

@@ -20,9 +20,13 @@
   text-align: center;
   font-weight: bold;
   vertical-align: top;
+  padding: 0;
 }
 #game-canvas .row .cell .val {
   background-color: FAF6D9;
+  color: #000;
+  width: 20px;
+  height: 20px;
   margin: 5px;
   padding: 5px;
   border-radius: 5px;
@@ -30,4 +34,21 @@
   text-align: center;
   font-weight: bold;
   vertical-align: top;
+  padding: 15px;
+  margin: 0;
+}
+#game-canvas .row .cell .val-4 {
+  background-color: #F7FA9D;
+}
+#game-canvas .row .cell .val-8 {
+  background-color: #FAF29D;
+}
+#game-canvas .row .cell .val-16 {
+  background-color: #FAE79D;
+}
+#game-canvas .row .cell .val-32 {
+  background-color: #FADC9D;
+}
+#game-canvas .row .cell .val-64 {
+  background-color: #FAD19D;
 }
