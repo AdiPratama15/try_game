@@ -1,54 +1,61 @@
 #game-canvas {
-  background: #FACC9D;
-  border-radius: 20px;
-  margin: 5px;
-  padding: 5px;
-  border-radius: 5px;
-  display: inline-block;
-  text-align: center;
-  font-weight: bold;
-  vertical-align: top;
+    background: #facc9d;
+    border-radius: 20px;
+    margin: 5px;
+    padding: 5px;
+    border-radius: 5px;
+    display: inline-block;
+    text-align: center;
+    font-weight: 700;
+    vertical-align: top
 }
+
 #game-canvas .row .cell {
-  width: 50px;
-  height: 50px;
-  background: #FAFAF7;
-  margin: 5px;
-  padding: 5px;
-  border-radius: 5px;
-  display: inline-block;
-  text-align: center;
-  font-weight: bold;
-  vertical-align: top;
-  padding: 0;
+    width: 50px;
+    height: 50px;
+    background: #fafaf7;
+    margin: 5px;
+    padding: 5px;
+    border-radius: 5px;
+    display: inline-block;
+    text-align: center;
+    font-weight: 700;
+    vertical-align: top;
+    padding: 0
 }
+
 #game-canvas .row .cell .val {
-  background-color: FAF6D9;
-  color: #000;
-  width: 20px;
-  height: 20px;
-  margin: 5px;
-  padding: 5px;
-  border-radius: 5px;
-  display: inline-block;
-  text-align: center;
-  font-weight: bold;
-  vertical-align: top;
-  padding: 15px;
-  margin: 0;
+    background-color: FAF6D9;
+    color: #000;
+    width: 20px;
+    height: 20px;
+    margin: 5px;
+    padding: 5px;
+    border-radius: 5px;
+    display: inline-block;
+    text-align: center;
+    font-weight: 700;
+    vertical-align: top;
+    padding: 15px;
+    margin: 0
 }
+
 #game-canvas .row .cell .val-4 {
-  background-color: #F7FA9D;
+    background-color: #f7fa9d
 }
+
 #game-canvas .row .cell .val-8 {
-  background-color: #FAF29D;
+    background-color: #faf29d
 }
+
 #game-canvas .row .cell .val-16 {
-  background-color: #FAE79D;
+    background-color: #fae79d
 }
+
 #game-canvas .row .cell .val-32 {
-  background-color: #FADC9D;
+    background-color: #fadc9d
 }
+
 #game-canvas .row .cell .val-64 {
-  background-color: #FAD19D;
+    background-color: #fad19d
 }
